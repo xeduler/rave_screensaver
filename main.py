@@ -47,9 +47,9 @@ def event_handler():
 
 
 
-def calc_corners(size, vtilt, htilt, voffset, hoffset, spin, intencity):
-    width_size = WINDOW_WIDTH * (1-size)
-    height_size = WINDOW_HEIGHT * (1-size)
+def calc_corners(size, voffset, hoffset, vtilt, htilt, spin, intencity):
+    width_size = WINDOW_WIDTH #* (1-size)
+    height_size = WINDOW_HEIGHT# * (1-size)
 
 
     top = (WINDOW_HEIGHT / 2) * (1-size) + voffset * WINDOW_HEIGHT
@@ -67,10 +67,11 @@ def calc_parameters(parameters, time, speed, copy_delta):
     for i in range(COPIES):
         time += copy_delta
         size = ((time % speed) / speed)**2
-        voffset = (math.sin(time / 20)) / 50
-        hoffset = (math.cos(time / 20)) / 50
-        vtilt = ((math.sin(time / 20)) / 128) / (size*100 + 1)
-        htilt = ((math.cos(time / 20)) / 128) / (size*100 + 1)
+        #size = (math.sin(time/speed)+2) / 3
+        voffset = math.sin(time  / 20) / 20
+        hoffset = math.cos(time / 20) / 20
+        vtilt = voffset / 6
+        htilt = hoffset / 6
         spin = 0
         intencity = size
         parameters[i] = [size, voffset, hoffset, vtilt, htilt, spin, intencity]
@@ -83,10 +84,10 @@ def show():
     for i in range(COPIES):
         left_top, right_top, left_bottom, right_bottom = calc_corners(*parameters[i])
 
-        pygame.draw.line(surface, (0, 255 * parameters[i][-1], 0), left_top, left_bottom)
-        pygame.draw.line(surface, (0, 255 * parameters[i][-1], 0), left_bottom, right_bottom)
-        pygame.draw.line(surface, (0, 255 * parameters[i][-1], 0), right_bottom, right_top)
-        pygame.draw.line(surface, (0, 255 * parameters[i][-1], 0), left_top, right_top)
+        pygame.draw.line(surface, (0, 255 * parameters[i][-1], 0), left_top, left_bottom, 4)
+        pygame.draw.line(surface, (0, 255 * parameters[i][-1], 0), left_bottom, right_bottom, 4)
+        pygame.draw.line(surface, (0, 255 * parameters[i][-1], 0), right_bottom, right_top, 4)
+        pygame.draw.line(surface, (0, 255 * parameters[i][-1], 0), left_top, right_top, 4)
 
     
     pygame.display.update()
