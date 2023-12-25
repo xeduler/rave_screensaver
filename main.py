@@ -48,7 +48,8 @@ def event_handler():
 
 
 def calc_corners(size, vtilt, htilt, voffset, hoffset, spin, intencity):
-    
+    width_size = WINDOW_WIDTH * (1-size)
+    height_size = WINDOW_HEIGHT * (1-size)
 
 
     top = (WINDOW_HEIGHT / 2) * (1-size) + voffset * WINDOW_HEIGHT
@@ -56,16 +57,16 @@ def calc_corners(size, vtilt, htilt, voffset, hoffset, spin, intencity):
     left = (WINDOW_WIDTH / 2) * (1-size) + hoffset * WINDOW_WIDTH
     right = WINDOW_WIDTH - left + hoffset * WINDOW_WIDTH * 2
 
-    return ([left + vtilt * WINDOW_WIDTH, top + htilt * WINDOW_HEIGHT],
-    [right - vtilt * WINDOW_WIDTH, top - htilt * WINDOW_HEIGHT],
-    [left - vtilt * WINDOW_HEIGHT, bottom - htilt * WINDOW_WIDTH],
-    [right + vtilt * WINDOW_HEIGHT, bottom + htilt * WINDOW_WIDTH])
+    return ([left + vtilt * width_size, top + htilt * height_size],
+    [right - vtilt * width_size, top - htilt * height_size],
+    [left - vtilt * height_size, bottom - htilt * width_size],
+    [right + vtilt * height_size, bottom + htilt * width_size])
 
 
 def calc_parameters(parameters, time, speed, copy_delta):
     for i in range(COPIES):
         time += copy_delta
-        size = (time % speed) / speed
+        size = ((time % speed) / speed)**2
         voffset = (math.sin(time / 20)) / 50
         hoffset = (math.cos(time / 20)) / 50
         vtilt = ((math.sin(time / 20)) / 128) / (size*100 + 1)
