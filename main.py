@@ -12,20 +12,14 @@ FPS = 60
 BACKGROUND_COLOR = [0, 0, 0]
 LINE_COLOR = [0, 255, 0]
 
-COPIES = 10
-COPIES_DELTA = 20
+speed = 252
+COPIES = 11
+COPIES_DELTA = speed / COPIES
 
 ############
 
-size = 0.7
-vtilt = 0
-htilt = 0
-voffset = 0
-hoffset = 0
-spin = 0
-intencity = 1
 
-speed = 200
+
 
 parameters = []
 for i in range(COPIES):
@@ -68,14 +62,17 @@ def calc_parameters(parameters, time, speed, copy_delta):
         time += copy_delta
         size = ((time % speed) / speed)**2
         #size = (math.sin(time/speed)+2) / 3
-        voffset = math.sin(time  / 20) / 20
-        hoffset = math.cos(time / 20) / 20
+        voffset = math.sin(time * 0.05) * 0.05
+        hoffset = math.cos(time * 0.05) * 0.05
         vtilt = voffset / 6
         htilt = hoffset / 6
         spin = 0
         intencity = size
         parameters[i] = [size, voffset, hoffset, vtilt, htilt, spin, intencity]
 
+
+#def shift_parameters(parameters, oversize=1.1):
+#    if parameters[-1][0] > oversize
 
 
 def show():
@@ -89,7 +86,9 @@ def show():
         pygame.draw.line(surface, (0, 255 * parameters[i][-1], 0), right_bottom, right_top, 4)
         pygame.draw.line(surface, (0, 255 * parameters[i][-1], 0), left_top, right_top, 4)
 
-    
+        #pygame.draw.rect(surface, (255, 255, 255), pygame.Rect(*left_top, 100, 100))
+
+
     pygame.display.update()
 
 
@@ -104,3 +103,4 @@ if __name__ == "__main__":
         show()
         clock.tick(FPS)
         calc_parameters(parameters, i, speed, COPIES_DELTA)
+        #shift_parameters(parameters, oversize=1.1)
